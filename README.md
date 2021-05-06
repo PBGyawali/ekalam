@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/PBGyawali/ekalam/tree/master/public/logo/logo.png" width="400"></p>
+<p align="center"><img src="https://github.com/PBGyawali/ekalam/blob/master/public/logo/logo.png?raw=true" width="400"></p>
 
 <p align="center">
 <a ><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
