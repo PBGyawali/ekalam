@@ -15,8 +15,8 @@ Ekalam is a web bases news portal expressive, elegant news. We believe news must
 - **ADD and edit user details and see list of users**
 - **ADD and edit news category and see list of category**
 - **ADD and edit edit adevertisement with the ability to end the start and end date of advertisement and see list of advertisement**
-- **CReate gallery and add gallery images for easy image adding to the future news **
-- **view news by category **
+- **Create gallery and add gallery images for easy image adding to the future news**
+- **view news by category**
 - **add any news as featured news to be added to the top of the page**
 - **divion of news based on federal states and navigation menu to toggle state news**
 
