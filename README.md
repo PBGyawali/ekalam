@@ -19,7 +19,7 @@ Ekalam is a web bases news portal expressive, elegant news. We believe news must
 - **view news by category with pagination**
 - **add any news as featured news to be added to the top of the page**
 - **division of news based on federal states and navigation menu to toggle state news**
-- **view single news **
+- **view single news**
 - **two factor authentication and ability to integrate external website or app through access tokens**
 - **forgot password,register, verifyy email and other profile user related features**
 
