@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\NewsPost;
 use Illuminate\Http\Request;
 use App\Models\Category;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 class NewsPostController extends Controller
 {
@@ -19,8 +18,8 @@ class NewsPostController extends Controller
     public function index()
     {
         //fetch all blog posts from DB
-        $posts= NewsPost::all();
-        return view('dashboard', ['posts'=>$posts]);
+        $posts= NewsPost::paginate(10);
+        return view('news.dashboard', ['posts'=>$posts]);
     }
 
     function all(){
@@ -64,6 +63,28 @@ class NewsPostController extends Controller
         $pagename=($category_info)?$category_info->name:'';
         return view('category.show',compact('category_info','categories','news','pagename'));
     }
+     /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\NewsPost  $newsPost
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request){
+        // Get the search value from the request
+        $search = $request->search;
+        $slug=Str::of($search)->slug('-');
+        // Search in the title and body columns from the posts table
+        $news = NewsPost::where('title', 'LIKE', "%$search%")
+                        ->orWhere('description', 'LIKE', "%$search%")
+                        ->orWhere('summary', 'LIKE', "%$search%")
+                        ->orWhere('slug', 'LIKE', "%$slug%")
+                        ->paginate(5);
+        $categories=Category::all();
+        $pagename=$category_info=ucwords('search result');
+        // Return the search view with the resluts compacted
+         return view('category.show',compact('category_info','categories','news','pagename'));
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -72,7 +93,7 @@ class NewsPostController extends Controller
      */
     public function create()
     {
-        return view('form',['categories'=>Category::all()]);
+        return view('news.form',['categories'=>Category::all()]);
     }
 
     /**
@@ -84,14 +105,14 @@ class NewsPostController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title' => ['required','unique:news_posts'],
+            'title' => ['required','unique:news_posts,title'],
             'category_id' => 'required',
             'news_date' => 'required',
             'image'=> ['nullable', 'image','mimes:jpg,jpeg,png,bmp,tiff' ,'max:4096'],
             'description' => 'required'
         ],[],['image'=>'file','category_id'=>'category name']);
         $fields=[
-            'slug'=>  Str::of($request->title)->slug('_'),
+            'slug'=>  Str::of($request->title)->slug('-'),
             'featured' => $request->has('featured'),
         ];
         if($request->hasFile('image')){
@@ -100,7 +121,7 @@ class NewsPostController extends Controller
             $fields['image']=basename($imageName);
         }
         NewsPost::create(array_merge($request->all(), $fields));
-        return redirect()->back()->with('message', 'The news was created!');
+        return back()->with('message', 'The news was created!');
     }
 
     /**
@@ -114,7 +135,7 @@ class NewsPostController extends Controller
          //returns the view with the post
          $related_news=NewsPost::where(['category_id'=>$newsPost->category_id])
          ->where('id', '!=', $newsPost->id)->limit(4)->get();
-        return view('show',['post'=>$newsPost,'categories'=>Category::all(),'related_news'=>$related_news]);
+        return view('news.show',['post'=>$newsPost,'categories'=>Category::all(),'related_news'=>$related_news]);
     }
     /**
      * Show the form for editing the specified resource.
@@ -125,7 +146,7 @@ class NewsPostController extends Controller
     public function edit(NewsPost $newsPost)
     {
         //returns the edit view with the post
-        return view('form', ['post' => $newsPost,'categories'=>Category::all()]);
+        return view('news.form', ['post' => $newsPost,'categories'=>Category::all()]);
     }
 
     /**
@@ -138,7 +159,7 @@ class NewsPostController extends Controller
     public function update(Request $request, NewsPost $newsPost)
     {
         $this->validate($request, [
-            'title' => ['required','unique:news_posts'],
+            'title' => ['required','unique:news_posts,title,'.$request->id],
             'category_id' => 'required',
             'news_date' => 'required',
             'image'=> ['nullable', 'image','mimes:jpg,jpeg,png,bmp,tiff' ,'max:4096'],
@@ -154,7 +175,7 @@ class NewsPostController extends Controller
             $fields['image']=basename($imageName);
         }
         $newsPost->update(array_merge($request->all(), $fields));
-        return redirect()->back()->with('message', 'The news was updated!');
+        return back()->with('message', 'The news was updated!');
     }
 
     /**
@@ -166,6 +187,6 @@ class NewsPostController extends Controller
     public function destroy(NewsPost $newsPost)
     {
         $newsPost->delete();
-        return redirect()->back()->with('message', 'The news was deleted!');
+        return back()->with('message', 'The news was deleted!');
     }
 }

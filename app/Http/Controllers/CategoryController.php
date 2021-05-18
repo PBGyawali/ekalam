@@ -17,7 +17,7 @@ class CategoryController extends Controller
     public function index()
     {
         //fetch all blog categories from DB
-         $categories = Category::all();
+         $categories = Category::paginate(10);
         return view('category.categorylist', ['categories'=>$categories]);
     }
 
@@ -80,8 +80,8 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $this->validate($request, [
-            'name' => ['required',Rule::unique('categories')->ignore($category->id)]        
-            ]); 
+            'name' => ['required',Rule::unique('categories')->ignore($category->id)]
+            ]);
             $category->update($request->all());
             return redirect()->back()->with('message', 'The category was updated!');
     }
@@ -93,7 +93,7 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Category $category)
-    { 
+    {
         $category->delete();
         return redirect()->back()->with('message', 'The category was deleted!');
     }

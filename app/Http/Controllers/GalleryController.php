@@ -19,7 +19,7 @@ class GalleryController extends Controller
     public function index()
     {
         //fetch all blog galleries from DB
-        $galleries = Gallery::all();
+        $galleries = Gallery::paginate(10);
         return view('gallery.gallerylist', ['galleries'=>$galleries]);
     }
 

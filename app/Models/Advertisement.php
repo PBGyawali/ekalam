@@ -6,10 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Advertisement extends Model
 {
-    public $timestamps = false;
+
     protected $fillable = [
-        'title',	'image',	'link',	'status',	'postion',	'start_date',	'end_date'
+        'title',	'image',	'link',	'status',	'position',	'start_date',	'end_date'
     ];
-    protected $dates = ['start_date','end_date'];
-    
+
+
+    protected $dates = ['created_at','updated_at','start_date','end_date'];
+
+    public function getTitleAttribute($value)
+    {
+        return ucfirst($value);
+    }
 }
