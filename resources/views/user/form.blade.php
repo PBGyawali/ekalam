@@ -57,7 +57,7 @@
                                 </div>
                             </div>
                             <div class="form-group col-12 col-sm-6  mt-2">
-                                <label for="user_type" class="col-sm-3">Status:</label>
+                                <label for="user_type" class="col-sm-3">Role:</label>
                                 <div class="col-sm-9">
                                     <select name="user_type" id="user_type" required class="form-control form-control-sm">
                                     <option value="user" {{(isset($user) && $user->user_type== 'user') ? 'selected' : '' }}>User</option>

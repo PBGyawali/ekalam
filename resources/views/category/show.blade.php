@@ -1,13 +1,13 @@
 @include('layouts.header')
 <div class="container mt-3">
-    @if(empty($category_info)) 
+    @if(empty($category_info))
         <h1 class='alert alert-danger text-center'>The choosen Category was not found.</h1>
-    @else 
+    @else
         <div class="row">
             <div class="col-12">
-                <ul class="css-nav bg-dark">
+                <ul class="css-nav p-0 bg-dark ">
                     <li>
-                        <h4 class="text-white">{{$category_info->name}}</h4>
+                        <h4 class="text-white text-center">{{$pagename}}</h4>
                     </li>
                 </ul>
             </div>

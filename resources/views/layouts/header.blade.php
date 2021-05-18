@@ -8,27 +8,21 @@
        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>{{isset($pagename)?$pagename:config('app.name','e-news')}}</title>
     <link rel="icon" href="<?= asset('favicon.ico') ?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo asset('css/all.min.css')?>">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
     <link rel="stylesheet" href="<?= asset('css/style.css') ?>">
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v6.0&appId=211575796776720&autoLogAppEvents=1"></script>
-    <style>
-
- </style>
 </head>
-<body>  
-    <?php
-    if (isset($home_1)) {
-    ?>
-        <div class="container" style="margin-top: 5px">
+<body>
+    @isset($ad_1)
+        <div class="container mt-3" >
             <div class="row">
                 <div class="col-12">
-                    <a href="<?php echo $home_1->link ?>" target='_ads'>
-                        <img src="<?php echo config('constants.storage_url') . '/ad/' . $home_1->image ?>" alt="<?php echo $home_1->title ?>" class="img img-fluid">
+                    <a href="<?= $ad_1->link ?>" target='_blank'>
+                        <img src="<?= config('constants.storage_url') . '/ad/' . $ad_1->image ?>" alt="<?= $ad_1->title ?>" class="img img-fluid">
                     </a>
                 </div>
             </div>
         </div>
-    <?php  } ?>
+    @endisset
     <!--Top_Head-->
     <div class="top_head ">
         <div class="container">
@@ -36,26 +30,22 @@
                 <div class="col-md-6">
                     <div class="logo_holder bg-dark">
                         <a href="./">
-                            <img src="<?php echo config('constants.asset_url').'/logo'?>/logo.png">
+                            <img src="<?= config('constants.asset_url').'/logo'?>/logo.png" class="img">
                         </a>
                     </div>
                     <div class="date_note">
-                        <?php
-                        echo date('l\, jS \of F Y h:i:s A');
-                        ?>
+                        <?= date('l\, jS \of F Y h:i:s A');?>
                     </div>
                 </div>
-                <?php
-                if (isset($home_2)) {
-                ?>
+                @isset($ad_2)
                     <div class="col-md-6">
                         <div class="info">
-                            <a href="<?php echo $home_2->link ?>" target="_ads">
-                                <img src="<?php echo config('constants.storage_url') . '/ad/' . $home_2->image ?>" style="width: 100%;" alt="<?php echo $home_2->title ?>">
+                            <a href="<?= $ad_2->link ?>" target="_ads">
+                                <img src="<?= config('constants.storage_url') . '/ad/' . $ad_2->image ?>" style="width: 100%;" alt="<?= $ad_2->title ?>">
                             </a>
                         </div>
                     </div>
-                <?php } ?>
+                @endisset
             </div>
         </div>
     </div>
@@ -64,24 +54,24 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-dark menu sticky-top">
         <div class="container">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon bg-light"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('allnews') }}">Home</a>
-                    </li> 
+                    </li>
                 @isset($categories)
                     @foreach ($categories as $cats)
                             <li class="nav-item">
-                                <a class="nav-link " href="{{route('category')}}/showall=<?php echo $cats->id ?>">
-                                    <?php echo $cats->name ?>
+                                <a class="nav-link " href="{{route('category')}}/showall=<?= $cats->id ?>">
+                                    <?= $cats->name ?>
                                 </a>
                             </li>
                      @endforeach
                  @endisset
              @if (Route::has('login'))
-                @auth 
+                @auth
                 <li class="nav-item" >
                         <a class="nav-link" href="{{ url('/dashboard') }}">Dashboard</a>
                 </li>
@@ -90,11 +80,25 @@
                         <a class="nav-link" href="{{ route('login') }}">Login</a>
                 </li>
                  @endauth
-            @endif                    
+            @endif
+                <li class="nav-item " >
+                    <form action="{{ route('search') }}" method="GET" role="search">
+
+                            <div class="input-group">
+                                <input type="search" class="form-control" name="search" placeholder="Search news" id="term">
+                                <span class="input-group-btn ">
+                                    <button class="btn btn-info" type="submit" title="Search news">
+                                        <span class="fas fa-search"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                </li>
+
+
                 </ul>
             </div>
         </div>
     </nav>
     <!-- NavBar-closed -->
-    
-    
+

@@ -10,7 +10,7 @@
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
             <div class="flex">
                 <div class="flex-auto text-2xl mb-4">gallery List</div>
-                
+
                 <div class="flex-auto text-right mt-2">
                     <a href="{{ route('addgallery') }}" class="btn btn-primary btn-md">Add gallery</a>
                 </div>
@@ -38,20 +38,20 @@
                         {{ $gallery->status }}
                         </td>
                         <td class="p-3 ">
-                            
+
                             <a href="./gallery/id={{$gallery->id}}" name="edit" class="btn btn-primary btn-sm">Edit</a>
                             <form action="{{ route('gallery')}}{{'/'.$gallery->id }}" method='post' class="inline-block">
                                 @method('DELETE')
                                 @csrf
                                 <button type="submit" name="delete" class="btn btn-danger btn-sm">Delete</button>
-                                
+
                             </form>
                         </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
-            
+            {{ $galleries->links() }}
         </div>
     </div>
 </div>

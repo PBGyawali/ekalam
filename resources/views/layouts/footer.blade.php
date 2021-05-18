@@ -38,9 +38,9 @@
                 </div>
                 <div class="row">
                     <div class="col-12 text-center">
-                        <a href="contacts.php"style="color:#fff">Contact</a><br>
-                        <a href="support.php"style="color:#fff">Support</a><br>
-                        <a href="ad.php"style="color:#fff">Advertise</a>
+                        <a href="{{route('contacts')}}"style="color:#fff">Contact</a><br>
+                        <a href="{{route('support')}}"style="color:#fff">Support</a><br>
+                        <a href="{{route('ad')}}"style="color:#fff">Advertise</a>
                     </div>
                 </div>
             </div>
@@ -53,10 +53,10 @@
                 </div>
                 <div class="row">
                     <div class="col-12 text-center">
-                        <a href="aboutus.php" style="color:#fff">About</a><br>
-                        <a href="carrer.php"style="color:#fff">Carrer</a><br>
-                        <a href="https://www.facebook.com" style="color: #fff"><i class="fab fa-facebook">facebook</i></a><br>
-                        <a href="https://www.twitter.com"style="color: #fff"><i class="fab fa-twitter">twitter</i></a><br>
+                        <a href="{{route('about')}}" style="color:#fff">About</a><br>
+                        <a href="{{route('career')}}"style="color:#fff">Carrer</a><br>
+                        <a href="https://www.facebook.com" style="color: #fff"><i class="fab fa-facebook"> facebook</i></a><br>
+                        <a href="https://www.twitter.com"style="color: #fff"><i class="fab fa-twitter"> twitter</i></a><br>
                     </div>
                 </div>
             </div>
@@ -64,12 +64,13 @@
     </div>
     <hr>
     <div class="container container-fluid" style="padding-bottom: 10px;">
-        © 2019-{{ date('Y') }} {{ucwords( config('app.name', 'enews'))}}.com All Rights Reserved <a href="privacy.php">Privacy Policy</a>
+        © 2019-{{ date('Y') }} {{ucwords( config('app.name', 'enews'))}}.com All Rights Reserved <a href="{{route('privacy')}}">Privacy Policy</a>
     </div>
 </section>
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<!-- Go to www.addthis.com/dashboard to customize your tools -->
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e8ca60b2eff2ca0"></script>
+
+
+
+
 
 </body>
 
