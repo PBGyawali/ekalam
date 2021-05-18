@@ -22,5 +22,6 @@ Ekalam is a web bases news portal expressive, elegant news. We believe news must
 - **view single news**
 - **two factor authentication and ability to integrate external website or app through access tokens**
 - **forgot password,register, verifyy email and other profile user related features**
+- **search mews**
 
 
