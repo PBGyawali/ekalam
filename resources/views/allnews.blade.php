@@ -157,89 +157,88 @@
         </div>
         <!-- ListingPage closed -->
 
-
     <!-- State Open -->
-    <div class="country">
-        <div class="container">
-            <div class="row mt-3">
-                <div class="col">
-                    <nav class="navbar navbar-dark bg-dark w-100" style="border-radius: 20px;">
-                        <span class="navbar-brand text-white">State</span>
-                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <?php $all=config('constants.states');
-                                array_shift($all);
-                        ?>
-                            @foreach( $all as $key=> $state)
-                                <a class="nav-item nav-link btn btn-rounded bg-dark text-white btn-outline-warning {{ $key == 'state1' ? 'active' : 'text-white' }}" id="nav-{{ $key}}-tab" data-toggle="tab" href="#nav-{{$key}}" role="tab" >
-                                    {{ $state}}
-                                </a>
-                            @endforeach
-                        </div>
-                    </nav>
-                    <div class="tab-content" id="nav-tabContent">
-                        <?php $first_state_news = array_shift($state_wise);?>
-                            <div class="tab-pane fade <?php echo '$key' == 'state1' ? 'show active' : '' ?>" id="nav-<?php echo' $key'; ?>" role="tabpanel" aria-labelledby="nav-<?php echo'' //$key; ?>-tab">
-                                  <div class="row mt-3">
-                                        <div class="col-md-6">
-                                            <a href="{{route('shownews')}}<?=$first_state_news[0]->id?>">
-                                            @if(file_exists(config('constants.storage_path') . '/news/' . $first_state_news[0]->image) && !empty($first_state_news[0]->image))
-                                                    <img src="<?php echo config('constants.storage_url').'/news/'.$first_state_news[0]->image; ?>" style="width: 100%; height: auto;">
-                                                @else
-                                                    <img src="<?php echo config('constants.asset_url').'/logo'.'/logo.png'; ?>" style="width: 100%; height: auto;">
-                                                @endif
+ <div class="country">
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col">
+                <nav class="navbar navbar-dark bg-dark w-100" style="border-radius: 20px;">
+                    <span class="navbar-brand text-white">State</span>
+                    <div class="nav nav-tabs border-bottom-0" id="nav-tab" role="tablist">
+                       <a class="shadow-none nav-item btn bg-dark text-white loading invisible" >
+                             <i class="fa fa-spinner fa-pulse"></i> PLEASE WAIT
+                        </a>
+                        <?php $all=config('constants.states');array_shift($all);?>
+                        @foreach( $all as $key=> $state)
+                            <a class="nav-item nav-link btn btn-rounded bg-dark text-white btn-outline-warning statestab {{ $key == 'state1' ? 'active' : 'text-white' }}" data-state="{{ $key}}"id="nav-{{ $key}}-tab" data-toggle="tab" href="#nav-{{$key}}" role="tab" >
+                                {{ $state}}
+                            </a>
+                        @endforeach
+                    </div>
+                </nav>
+                <!--tab content open-->
+                <div class="tab-content" id="nav-tabContent">
+                    <span class="statenewsdata">
+                    @foreach($state_wise as $mainkey=>$statenews)
+                    <!--tab pane open-->
+                        <div class="tab-pane fade <?= $mainkey=='state1'?'show active '.$mainkey : '' ?>" id="nav-{{$mainkey}}" role="tabpanel" aria-labelledby="nav-{{$mainkey}}-tab">
+                            <div class="pb-5 spacing div"><!--spacing div open-->
+                                @foreach ($statenews as $key=>$news_list)
+                                @if($loop->first)
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <a href="{{route('shownews')}}<?= $news_list->id; ?>">
+                                                <img src="<?= config('constants.storage_url').'/news/'.$news_list->image; ?>" class="img img-fluid" >
+                                        </a>
+                                        <h1 class="nagdunga">
+                                            <a href="{{route('shownews')}}<?= $news_list->id; ?>">
+                                                {{$news_list->title}}
                                             </a>
-                                            <h1 class="nagdunga">
-                                                <a href="{{route('shownews')}}<?=$first_state_news[0]->id?>">
-                                                   {{ $first_state_news[0]->title}}
+                                        </h1>
+                                        <p>{{$news_list->summary}}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                @endif
+                                @if(!$loop->first && !$loop->last)
+                                    <div class="col-sm-6 col-md-4 header1 h5">
+                                        <a href="{{route('shownews')}}<?= $news_list->id; ?>">
+                                                <img src="<?= config('constants.storage_url').'/news/'.$news_list->image; ?>" class="img img-fluid">
+                                        </a>
+                                        <p style="padding-top: 20px; font-weight: 400; font-size: 16px;">
+                                            <a href="{{route('shownews')}}<?= $news_list->id; ?>">
+                                                {{$news_list->title}}
+                                            </a>
+                                        </p>
+                                    </div>
+                                @endif
+                                @if($loop->last)
+                                            <div class="col-sm-6 col-md-4 header1 h5">
+                                                <a href="{{route('shownews')}}<?= $news_list->id; ?>">
+                                                    <img src="<?= config('constants.storage_url').'/news/'.$news_list->image; ?>" class="img img-fluid">
                                                 </a>
-                                            </h1>
-                                            <p>{{ $first_state_news[0]->summary}}</p>
-                                        </div>
-
-                                        <div class="col-md-6">
-
-                                        @foreach($state_wise as $mainkey=>$statenews)
-
-                                            <div class="row">
-                                                @foreach ($statenews as $news_list)
-                                                        <div class="col-sm-6 col-md-4 header1 h5 mt-2">
-                                                            <a href="{{route('shownews')}}<?php echo $news_list->id; ?>">
-                                                            @if(file_exists(config('constants.storage_path') . '/news/' . $news_list->image) && !empty($news_list->image))
-                                                                    <img src="<?php echo  config('constants.storage_url').'/news/' . $news_list->image; ?>" class="">
-                                                              @else
-                                                                    <img src="<?php echo config('constants.asset_url').'/logo'.'/logo.png'; ?> " class="">
-                                                             @endif
-                                                            </a>
-                                                            <p class="pt-5 header1 "style="font-weight: 400; font-size: 16px;">
-                                                                <a class="h5" href="{{route('shownews')}}<?php echo $news_list->id; ?>">
-                                                                   {{  $news_list->title}}
-                                                                </a>
-                                                            </p>
-                                                        </div>
-                                               @endforeach
+                                                <p style="padding-top: 20px; font-weight: 400; font-size: 16px;">
+                                                    <a href="{{route('shownews')}}<?= $news_list->id; ?>">
+                                                        {{$news_list->title}}
+                                                    </a>
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
-                                    @endforeach
-                            </div>
-
-                    </div>
-                </div>
-                @if(isset($advertisements))
-                    @foreach($advertisements as $home_2)
-                        <div class="col-md-3">
-                            <div class="ad">
-                                <a href="" target="_ads">
-                                    <img src="<?php echo config('constants.storage_path') . '/ad/' . $home_2->image ?>" style="width: 100%;" alt="<?php echo $home_2->title ?>">
-                                </a>
-                            </div>
-                        </div>
+                                @endif
+                                @endforeach
+                            </div><!--spacing div closed-->
+                        </div><!--tab pane closed-->
                     @endforeach
-               @endif
+                </span>
+                </div><!--tab content Closed-->
             </div>
         </div>
     </div>
-    <!--State Closed-->
+</div>
+  <!--State Closed-->
+
+
         <!-- Listing_page -->
         <div class="title_news">
             <div class="container">
@@ -275,7 +274,7 @@
                 <div class="row mt-3">
                 @foreach ($sports_news as $sop_news)
                             <div class="col-md-3">
-                                <img src="<?php echo  config('constants.storage_url').'/news/' . $sop_news->image ?>"  style="width: 100%; height: auto;">
+                                <img src="<?php echo  config('constants.storage_url').'/news/' . $sop_news->image ?>"  class="img img-fluid">
 
                                 <p class="three_nepali mt-3 linkhead h5">
                                     <a href="{{route('shownews')}}{{$sop_news->id}}">
@@ -290,3 +289,39 @@
         <!-- ListingPage closed -->
 
         @include('layouts.footer')
+        <script>
+            $(document).ready(function(){
+                $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                $(document).on('click', '.statestab', function(){
+                    var state = $(this).data('state');
+                    url='{{route('news')}}'
+                    $.ajax({
+                          url: url,
+                          method:"POST",
+                          data:{statename:state},
+                          dataType:'JSON',
+                          error:function(request)
+                            {
+                                alert(request.responseJSON.message);
+                            },
+                            beforeSend:function()
+                            {
+                                $(".loading").removeClass('invisible');
+                            },
+                            complete:function()
+                            {
+                                $(".loading").addClass('invisible');
+                            },
+                          success:function(data)
+                          {
+                            $(".tab-pane").replaceWith(data);
+                          }
+                    })
+                });
+
+            });
+            </script>

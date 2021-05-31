@@ -5,11 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>{{isset($pagename)?$pagename:config('app.name','e-news')}}</title>
     <link rel="icon" href="<?= asset('favicon.ico') ?>">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
     <link rel="stylesheet" href="<?= asset('css/style.css') ?>">
+
 </head>
 <body>
     @isset($ad_1)
@@ -53,37 +55,37 @@
     <!-- NavBar-Open -->
     <nav class="navbar navbar-expand-lg navbar-light bg-dark menu sticky-top">
         <div class="container">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon bg-light"></span>
-            </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav ">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('allnews') }}">Home</a>
                     </li>
-                @isset($categories)
-                    @foreach ($categories as $cats)
-                            <li class="nav-item">
-                                <a class="nav-link " href="{{route('category')}}/showall=<?= $cats->id ?>">
-                                    <?= $cats->name ?>
-                                </a>
-                            </li>
-                     @endforeach
-                 @endisset
-             @if (Route::has('login'))
-                @auth
-                <li class="nav-item" >
-                        <a class="nav-link" href="{{ url('/dashboard') }}">Dashboard</a>
-                </li>
-                @else
-                <li class="nav-item" >
-                        <a class="nav-link" href="{{ route('login') }}">Login</a>
-                </li>
-                 @endauth
-            @endif
-                <li class="nav-item " >
-                    <form action="{{ route('search') }}" method="GET" role="search">
-
+                    @isset($categories)
+                        @foreach ($categories as $cats)
+                                <li class="nav-item">
+                                    <a class="nav-link " href="{{route('category')}}/showall=<?= $cats->id ?>">
+                                        <?= $cats->name ?>
+                                    </a>
+                                </li>
+                        @endforeach
+                    @endisset
+                    @if (Route::has('login'))
+                        @auth
+                        <li class="nav-item" >
+                                <a class="nav-link" href="{{ url('/dashboard') }}">Dashboard</a>
+                        </li>
+                        @else
+                        <li class="nav-item" >
+                                <a class="nav-link" href="{{ route('login') }}">Login</a>
+                        </li>
+                        @endauth
+                    @endif
+                </ul>
+            </div>
+            <div class="container d-inline-block" >
+                <ul class="navbar-nav">
+                    <li class="nav-item " >
+                        <form action="{{ route('search') }}" method="GET" role="search">
                             <div class="input-group">
                                 <input type="search" class="form-control" name="search" placeholder="Search news" id="term">
                                 <span class="input-group-btn ">
@@ -91,14 +93,16 @@
                                         <span class="fas fa-search"></span>
                                     </button>
                                 </span>
+                                <span class="input-group-btn ">
+                                    <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                        <span class="navbar-toggler-icon bg-light"></span>
+                                    </button>
+                                </span>
                             </div>
                         </form>
-                </li>
-
-
+                    </li>
                 </ul>
             </div>
-        </div>
     </nav>
     <!-- NavBar-closed -->
 

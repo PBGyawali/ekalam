@@ -10,11 +10,12 @@
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
         @livewireStyles
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased" id="page-top">
         <x-jet-banner />
         <div class="min-h-screen bg-gray-100">
             @livewire('navigation-menu')
@@ -26,38 +27,25 @@
                     </div>
                 </header>
             @endisset
+            <?php $usermessages = array('message','error'); ?>
             <span class="text-center w-100 position-absolute mb-3 message" id="message">
-                                @if(session()->has('message'))
-                                <div class="alert alert-success alert-dismissible fade show" id='alert'>
-                                    {{ session()->get('message') }}
-                                    <button type="button" class="close" onclick="hide_me()">&times;</button>
-                                </div>
-                                @elseif(session()->has('error'))
-                                <div class="alert alert-danger alert-dismissible fade show">
-                                    {{ session()->get('error') }}
-                                    <button type="button" class="close" onclick="hide_me()">&times;</button>
-                                </div>
-                                @endif
+                @foreach($usermessages as $key)
+                    @if(session()->has($key))
+                        <div class="alert alert-{{$key=='message'?'success':'danger'}} alert-dismissible fade show" x-data="{ show: true }" x-init="setTimeout(() => { show = false }, 4000)" x-show.transition.opacity.out.duration.1500ms="show">
+                            {{ session()->get($key) }}
+                        <button type="button" class="close" x-on:click="show=false">&times;</button>
+                        </div>
+                     @endif
+                @endforeach
             </span>
             <!-- Page Content -->
             <main>
                 {{ $slot }}
             </main>
+            <a class="absolute right-0" href="#page-top"><i class=" fas fa-angle-up fa-4x"></i></a>
         </div>
-
         @stack('modals')
-
         @livewireScripts
+
     </body>
-    <script>
-    function hide_me(){
-        var myClasses = document.querySelectorAll('.alert'),
-    i = 0,
-    l = myClasses.length;
-        for (i; i < l; i++) {
-            myClasses[i].style.display = 'none';
-        }
-    }
-    setTimeout(function(){ hide_me(); }, 4000);
-    </script>
 </html>
