@@ -21,6 +21,8 @@ Route::get('/news/id=')->name('shownews');
 
 Route::get('/category/showall=')->name('showcategory'); //shows edit post form
 Route::get('/',[NewsPostController::class, 'all'])->name('allnews');
+Route::post('/news', [NewsPostController::class, 'state'])->name('news');
+Route::post('/',[NewsPostController::class, 'state']);
 Route::get('/news/id={newsPost}', [NewsPostController::class, 'show']);
 Route::get('/search/', [NewsPostController::class, 'search'])->name('search');
 Route::get('/career', function () {         return view('carreer');})->name('career');
