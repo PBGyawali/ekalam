@@ -25,27 +25,30 @@ class NewsPostController extends Controller
     function all(){
         $categories=Category::all();
         $featured=NewsPost::where('featured',true);
-        $featured_news=$featured->take(3)->get();
+       $featured_news=$featured->take(3)->get();
         $next_featured_news=$featured->skip(3)->take(3)->get();
-        $first_element= $featured->skip(6)->first();
-        $category_news=NewsPost::where('category_id','11');
-        $first_category_element=$category_news->first();
-        $first_category=$category_news->skip(1)->take(3)->get();
-        $second_category=$category_news->skip(4)->take(3)->get();
-        $third_category=$category_news->skip(7)->take(3)->get();
-        $all=config('constants.states');
-        //array_shift($all);
+       $first_element= $featured->skip(6)->first();
+       $category_news=NewsPost::where('category_id','11');
+       $first_category_element=$category_news->first();
+       $first_category=$category_news->skip(1)->take(3)->get();
+    $second_category=$category_news->skip(4)->take(3)->get();
+    $third_category=$category_news->skip(7)->take(3)->get();
+    $all=config('constants.states');
+        array_shift($all);
+      $all=array('state1'=>'state1');
         $sports_news=NewsPost::where('category_id','14')->skip(1)->take(3)->get();
         $second_news=NewsPost::where('category_id','14')->first();
-        foreach( $all as $key=> $state){
+       foreach( $all as $key=> $state){
             $state_wise[$key]=NewsPost::where('state',$key)->limit(3)->get();
         }
         return view('allnews',
-        compact(
-        ['categories','featured_news',
-        'next_featured_news','first_element','first_category','first_category_element',
-        'state_wise','sports_news','second_news','second_category','third_category'
-        ]));
+      compact([
+        'categories',
+        'featured_news', 'next_featured_news', 'first_element', 'first_category','first_category_element',
+        'state_wise',
+        'sports_news','second_news','second_category','third_category'
+        ])
+    );
 
     }
 
@@ -137,6 +140,63 @@ class NewsPostController extends Controller
          ->where('id', '!=', $newsPost->id)->limit(4)->get();
         return view('news.show',['post'=>$newsPost,'categories'=>Category::all(),'related_news'=>$related_news]);
     }
+
+      /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function state(Request $request)
+    {    //returns the view with the post
+        $data=NewsPost::where(['state'=>$request->statename])->limit(4)->get();
+        $html=' <div class="tab-pane fade show active"  role="tabpanel" >
+        <div class="pb-5 spacing div"><!--spacing div open-->';
+        if(empty($data[0]->id)){
+            $html.= '<div class="alert alert-warning text-center">NO NEWS FOUND</div>';
+        }
+        if($data){
+                foreach($data as $mainkey=>$news_list){
+                    if($mainkey==0){
+                        $html.='<div class="row mt-3">
+                            <div class="col-12 col-md-6">
+                                <a href="'.route('shownews').$news_list->id.'">
+                                    <img src="'.config('constants.storage_url').'/news/'.$news_list->image.'" class="img img-fluid" >
+                                    </a>
+                                 <h1 class="nagdunga header1">
+                                        <a href="'.route('shownews').$news_list->id.'">'.
+                                            $news_list->title.'
+                                        </a>
+                                </h1>
+                                <p>'.$news_list->summary.'</p>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="row">';
+                        }
+                    else{
+                            $html.= ' <div class=" col-12 col-md-4 header1 h5">
+                            <a href="'.route('shownews').$news_list->id.'">
+                                    <img src="'.config('constants.storage_url').'/news/'.$news_list->image.'" class="img img-fluid">
+                            </a>
+                            <p style="padding-top: 20px; font-weight: 400; font-size: 16px;">
+                                <a href="'.route('shownews').$news_list->id.'">'.
+                                        $news_list->title.'
+                                </a>
+                            </p>
+                        </div>';
+                    }
+            }
+            $html.= '</div>
+                    </div>
+                 </div> ';
+        }
+
+         $html.= '</div><!--spacing div closed-->
+            </div><!--tab pane closed-->';
+         return response()->json($html);
+    }
+
+
     /**
      * Show the form for editing the specified resource.
      *

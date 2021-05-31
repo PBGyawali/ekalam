@@ -43,7 +43,7 @@ class CategoryController extends Controller
             'name' => ['required','unique:categories']
         ]);
          Category::create($request->all());
-        return redirect()->back()->with('message', 'The category was created!');
+         return redirect()->back()->with(['message' => 'The category was created!']);
     }
 
     /**
@@ -79,11 +79,15 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $this->validate($request, [
-            'name' => ['required',Rule::unique('categories')->ignore($category->id)]
+       $this->validate($request, [
+           'name' => ['required',Rule::unique('categories')->ignore($category->id)]
             ]);
             $category->update($request->all());
-            return redirect()->back()->with('message', 'The category was updated!');
+            if($request->ajax() || $request->wantsJson())
+            {
+                return response()->json(['success' => 'The category was updated!']);
+            }
+           return redirect()->back()->with(['message' => 'The category was updated!']);
     }
 
     /**
